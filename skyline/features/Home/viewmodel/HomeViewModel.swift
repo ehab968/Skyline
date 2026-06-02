@@ -6,20 +6,32 @@
 //
 
 import Foundation
+
+// MARK: - Protocol
+
 protocol HomeViewModelProtocol {
     var currentWeather: CurrentWeather? { get }
     var forecast: [ForecastDay] { get }
+    var timeOfDay: TimeOfDay { get }
 }
 
+// MARK: - ViewModel
 
 @Observable
-class HomeViewModel:HomeViewModelProtocol {
+class HomeViewModel: HomeViewModelProtocol {
     var currentWeather: CurrentWeather?
     var forecast: [ForecastDay] = []
+    
+    private(set) var timeOfDay: TimeOfDay = .currentTimeOfDay()
     
     init() {
         loadMockData()
     }
+    
+    func refreshTimeOfDay() {
+        timeOfDay = .currentTimeOfDay()
+    }
+   
     
     private func loadMockData() {
         self.currentWeather = CurrentWeather(

@@ -29,7 +29,7 @@ struct ForcastHighLowRange: View {
                 .font(.system(size: 15, weight: .bold))
                 .foregroundColor(.white)
         }
-//        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity)
     }
 }
 

@@ -14,7 +14,7 @@ struct ForecastSection: View {
         VStack(alignment: .leading, spacing: 12) {
             ForcastSectionTitle()
             Divider()
-                .background(Color.white.opacity(0.15))
+                .background(Color.white)
                 .padding(.horizontal, 16)
             
             VStack() {
