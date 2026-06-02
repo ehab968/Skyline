@@ -12,8 +12,12 @@ struct WeatherStatsGrid: View {
     let humidity: String
     let uvIndex: String
     
+    private let columns = [
+        GridItem(.flexible(), spacing: 12),
+        GridItem(.flexible())
+    ]
     var body: some View {
-        HStack(spacing: 12) {
+        LazyVGrid(columns: columns, spacing: 12) {
             
             StatCard(
                 title: "WIND",
@@ -34,6 +38,12 @@ struct WeatherStatsGrid: View {
                 value: uvIndex,
                 iconName: "sun.max.fill",
                 iconColor: Color.accentOrange
+            )
+            StatCard(
+                title: "VISIBILITY",
+                value: humidity,
+                iconName: "eye.fill",
+                iconColor: Color.purple
             )
         }
         .padding(.horizontal, 16)
