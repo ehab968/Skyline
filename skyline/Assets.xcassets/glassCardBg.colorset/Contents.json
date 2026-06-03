@@ -15,7 +15,7 @@
     {
       "appearances" : [
         {
-          "appearance" : "luminance",
+          "appearance" : "UIUserInterfaceStyle",
           "value" : "dark"
         }
       ],

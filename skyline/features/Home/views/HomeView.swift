@@ -31,9 +31,9 @@ struct HomeView: View {
                 }
             }
             .navigationDestination(isPresented: $showAddCity) {
-//                AddCityView(viewModel: viewModel)
+                AddCityView(homeViewModel: viewModel)
             }
-            .timeBasedBackground(for: viewModel.timeOfDay)
+            .AppBackground(for: viewModel.timeOfDay)
             .toolbar(.hidden, for: .navigationBar)
             .onAppear {
                 viewModel.refreshTimeOfDay()

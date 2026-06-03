@@ -32,7 +32,7 @@ struct AppBackgroundModifier: ViewModifier {
 }
 
 extension View {
-    func timeBasedBackground(for timeOfDay: TimeOfDay) -> some View {
+    func AppBackground(for timeOfDay: TimeOfDay) -> some View {
         self.modifier(AppBackgroundModifier(timeOfDay: timeOfDay))
     }
 }
