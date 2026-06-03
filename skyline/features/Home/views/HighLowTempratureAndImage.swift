@@ -33,11 +33,12 @@ struct HighLowTempratureAndImage: View {
             .background(Color.glassCardBg)
             .cornerRadius(20)
             
-            Image(.sunny)
+            Image(systemName: "sun.max.fill")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 75, height: 75)
                 .padding(.top, 4)
+                .foregroundStyle(Color.accentOrange)
         }
     }
 }
