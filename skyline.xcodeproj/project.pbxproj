@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6D13F5E52FD08D1F009A5434 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6D13F5E42FD08D1F009A5434 /* Alamofire */; };
-		6D13F5E72FD08D1F009A5434 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 6D13F5E62FD08D1F009A5434 /* AlamofireDynamic */; };
 		6D7BB72D2FD2B9B100FA3267 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 6D7BB72C2FD2B9B100FA3267 /* Swinject */; };
 		6D7BB7322FD2CCAE00FA3267 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 6D7BB7312FD2CCAE00FA3267 /* Kingfisher */; };
 /* End PBXBuildFile section */
@@ -32,7 +31,6 @@
 			files = (
 				6D7BB7322FD2CCAE00FA3267 /* Kingfisher in Frameworks */,
 				6D13F5E52FD08D1F009A5434 /* Alamofire in Frameworks */,
-				6D13F5E72FD08D1F009A5434 /* AlamofireDynamic in Frameworks */,
 				6D7BB72D2FD2B9B100FA3267 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,7 +75,6 @@
 			name = skyline;
 			packageProductDependencies = (
 				6D13F5E42FD08D1F009A5434 /* Alamofire */,
-				6D13F5E62FD08D1F009A5434 /* AlamofireDynamic */,
 				6D7BB72C2FD2B9B100FA3267 /* Swinject */,
 				6D7BB7312FD2CCAE00FA3267 /* Kingfisher */,
 			);
@@ -276,6 +273,7 @@
 				DEVELOPMENT_TEAM = P59Y75W95P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need access to your location to display the current weather and forecasts for your area.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -308,6 +306,7 @@
 				DEVELOPMENT_TEAM = P59Y75W95P;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need access to your location to display the current weather and forecasts for your area.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -385,11 +384,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6D13F5E32FD08D1F009A5434 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		6D13F5E62FD08D1F009A5434 /* AlamofireDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6D13F5E32FD08D1F009A5434 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = AlamofireDynamic;
 		};
 		6D7BB72C2FD2B9B100FA3267 /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;

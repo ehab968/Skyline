@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
-
+import Kingfisher
 struct HighLowTempratureAndImage: View {
     let high: Int
     let low: Int
+    let imageName: String
     
     var body: some View {
         VStack(spacing: 12) {
@@ -33,19 +34,22 @@ struct HighLowTempratureAndImage: View {
             .background(Color.glassCardBg)
             .cornerRadius(20)
             
-            Image(systemName: "sun.max.fill")
+            // temprature condtion image
+            KFImage(URL(string: imageName))
+                .placeholder {
+                    ProgressView()
+                }
                 .resizable()
                 .scaledToFit()
                 .frame(width: 75, height: 75)
                 .padding(.top, 4)
-                .foregroundStyle(Color.accentOrange)
         }
     }
 }
 
 #Preview {
-    ZStack {
-        Color.blue.ignoresSafeArea()
-        HighLowTempratureAndImage(high: 25, low: 18)
-    }
+//    ZStack {
+//        Color.blue.ignoresSafeArea()
+//        HighLowTempratureAndImage(high: 25, low: 18)
+//    }
 }

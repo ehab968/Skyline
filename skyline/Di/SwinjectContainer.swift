@@ -22,10 +22,14 @@ class SwinjectContainer {
         container.register(NetworkServiceProtocol.self) { _ in
             return NetworkService()
         }
+        container.register(LocationServiceProtocol.self) { _ in
+            return LocationService()
+        }
         
         container.register(HomeViewModelProtocol.self) { r in
             let networkService = r.resolve(NetworkServiceProtocol.self)!
-            return HomeViewModel(networkService: networkService)
+            let locationService = r.resolve(LocationServiceProtocol.self)!
+            return HomeViewModel(networkService: networkService, locationService: locationService)
         }
     }
     

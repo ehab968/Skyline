@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddCityView: View {
     @State private var viewModel = AddCityViewModel()
-    var homeViewModel :HomeViewModel
+    var homeViewModel :HomeViewModelProtocol
     
     var body: some View {
         NavigationStack {
@@ -32,5 +32,5 @@ struct AddCityView: View {
 }
 
 #Preview {
-    AddCityView(homeViewModel: HomeViewModel())
+//    AddCityView(homeViewModel: HomeViewModel())
 }

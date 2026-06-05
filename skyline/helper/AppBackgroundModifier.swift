@@ -23,7 +23,7 @@ struct AppBackgroundModifier: ViewModifier {
             .ignoresSafeArea()
             
             Color.black
-                .opacity(timeOfDay == .morning ? 0.10 : 0.25)
+                .opacity(timeOfDay == .morning ? 0.16 : 0.25)
                 .ignoresSafeArea()
             
             content

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ForecastSection: View {
-    let forecast: [ForecastDay]
+    let forecastDay: [ForecastDay]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -17,19 +17,23 @@ struct ForecastSection: View {
                 .background(Color.white)
                 .padding(.horizontal, 16)
             
-            VStack() {
-                ForEach(forecast) { day in
-                    HStack() {
-                        // Day Label
-                        ForcastDayLabel(day: day)
-                        // Condition Icon & Description
-                        ForcastConditionIconAndDescription(day: day)
-                        
-                        Spacer()
-                        // High/Low Range
-                        ForcastHighLowRange(day: day)
+            VStack(spacing: 16) {
+                ForEach(forecastDay) { day in
+                    NavigationLink(destination: HourlyForecastView(viewModel: HourlyForecastViewModel(day: day))) {
+                        HStack(spacing: 12) {
+                            // Day Label
+                            ForcastDayLabel(day: day)
+                            // Condition Icon & Description
+                            ForcastConditionIconAndDescription(day: day)
+                            
+                            Spacer(minLength: 8)
+                            
+                            // High/Low Range
+                            ForcastHighLowRange(day: day)
+                        }
+                        .padding(.horizontal, 16)
                     }
-                    .padding(.horizontal, 16)
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .padding(.bottom, 16)
@@ -45,12 +49,5 @@ struct ForecastSection: View {
 }
 
 #Preview {
-    ZStack {
-        Color.blue.ignoresSafeArea()
-        ForecastSection(forecast: [
-            ForecastDay(day: "Today", iconName: "sun.max.fill", condition: "Sunny", highTemp: 25, lowTemp: 18),
-            ForecastDay(day: "Tomorrow", iconName: "cloud.sun.fill", condition: "Partly Cloudy", highTemp: 24, lowTemp: 17),
-            ForecastDay(day: "Thursday", iconName: "cloud.rain.fill", condition: "Showers", highTemp: 21, lowTemp: 15)
-        ])
-    }
+
 }

@@ -11,7 +11,7 @@ struct WeatherStatsGrid: View {
     let windSpeed: String
     let humidity: String
     let uvIndex: String
-    
+    let pressure: String
     private let columns = [
         GridItem(.flexible(), spacing: 12),
         GridItem(.flexible())
@@ -40,9 +40,9 @@ struct WeatherStatsGrid: View {
                 iconColor: Color.accentOrange
             )
             StatCard(
-                title: "VISIBILITY",
-                value: humidity,
-                iconName: "eye.fill",
+                title: "Pressure",
+                value: pressure,
+                iconName: "gauge",
                 iconColor: Color.purple
             )
         }
@@ -51,8 +51,8 @@ struct WeatherStatsGrid: View {
 }
 
 #Preview {
-    ZStack {
-        Color.blue.ignoresSafeArea()
-        WeatherStatsGrid(windSpeed: "12 km/h", humidity: "64%", uvIndex: "Low")
-    }
+//    ZStack {
+//        Color.blue.ignoresSafeArea()
+//        WeatherStatsGrid(windSpeed: "12 km/h", humidity: "64%", uvIndex: "Low")
+//    }
 }

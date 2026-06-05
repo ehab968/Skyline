@@ -11,7 +11,7 @@ struct ForcastHighLowRange: View {
     var day: ForecastDay
     var body: some View {
         HStack(spacing: 12) {
-            Text("\(day.lowTemp)°")
+            Text("\(Int(day.day.mintempC))°")
                 .font(.system(size: 15, weight: .medium, design: .rounded))
                 .foregroundColor(.white.opacity(0.6))
             
@@ -25,22 +25,12 @@ struct ForcastHighLowRange: View {
                 )
                 .frame(width: 40, height: 5)
             
-            Text("\(day.highTemp)°")
+            Text("\((Int(day.day.maxtempC)))°")
                 .font(.system(size: 15, weight: .bold))
                 .foregroundColor(.white)
         }
-        .frame(maxWidth: .infinity)
     }
 }
 
 #Preview {
-    ForcastHighLowRange(
-        day: ForecastDay(
-            day: "Monday",
-            iconName: "sun.max.fill",
-            condition: "Sunny",
-            highTemp: 25,
-            lowTemp: 18
-        )
-    )
 }
