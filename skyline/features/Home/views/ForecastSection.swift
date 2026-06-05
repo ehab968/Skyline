@@ -20,7 +20,7 @@ struct ForecastSection: View {
             VStack(spacing: 16) {
                 ForEach(forecastDay) { day in
                     NavigationLink(destination: HourlyForecastView(viewModel: HourlyForecastViewModel(day: day))) {
-                        HStack(spacing: 12) {
+                        HStack() {
                             // Day Label
                             ForcastDayLabel(day: day)
                             // Condition Icon & Description

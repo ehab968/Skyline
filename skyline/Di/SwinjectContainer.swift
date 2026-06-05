@@ -31,8 +31,20 @@ class SwinjectContainer {
             let locationService = r.resolve(LocationServiceProtocol.self)!
             return HomeViewModel(networkService: networkService, locationService: locationService)
         }
+        
+        container.register(AddCityViewModelProtocol.self) { r in
+            let networkService = r.resolve(NetworkServiceProtocol.self)!
+            return AddCityViewModel(networkService: networkService)
+        }
+        container.register(AddCityViewFactory.self) { _ in
+            return AddCityViewFactory(swinjectContainer: self)
+        }
+        
+        container.register(HomeViewFactory.self) { r in
+            let addCityFact = r.resolve(AddCityViewFactory.self)!
+            return HomeViewFactory(swinjectContainer: self, addCityFactory: addCityFact)
+        }
     }
-    
     
     func resolve<T>(_: T.Type) -> T {
         return container.resolve(T.self)!

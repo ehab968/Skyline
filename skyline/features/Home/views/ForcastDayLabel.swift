@@ -14,7 +14,7 @@ struct ForcastDayLabel: View {
         Text(WeatherDateHelper.formatWeatherDate(day.date))
             .font(.system(size: 16, weight: .semibold, design: .rounded))
             .foregroundColor(.white)
-            .frame(width: 80, alignment: .leading)
+            .frame(width: 90, alignment: .leading)
     }
 }
 

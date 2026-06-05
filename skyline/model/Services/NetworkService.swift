@@ -9,13 +9,13 @@ import Foundation
 import Alamofire
 protocol NetworkServiceProtocol {
     func fetchCurrentWeather(lat: Double, long: Double) async throws -> WeatherResponse
-    func fetchCurrentWeather(city: String)
     func fetchForecastWeather(lat: Double, long: Double) async throws -> ForecastResponse
+    func searchCities(city: String) async throws -> [SearchResponse] 
 }
 
 
 class NetworkService: NetworkServiceProtocol {
-    private let apiKey = "1407565ffc634a1e9c4232549242907"
+    private let apiKey = "2b2f60d39bae4ab58b6111940260306"
     private let baseURL = "https://api.weatherapi.com/v1"
     
     func fetchCurrentWeather(lat: Double, long: Double)async throws-> WeatherResponse {
@@ -38,7 +38,7 @@ class NetworkService: NetworkServiceProtocol {
         let parameters: [String: String] = [
             "key": apiKey,
             "q": "\(lat),\(long)",
-            "days": "3",
+            "days": "7",
             "aqi": "no",
             "alerts": "no"
         ]
@@ -50,7 +50,22 @@ class NetworkService: NetworkServiceProtocol {
         return response
     }
     
-    func fetchCurrentWeather(city: String){
+    
+    func searchCities(city: String) async throws -> [SearchResponse] {
+        guard let encodedQuery = city.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return []
+        }
+        
+        let urlString = "\(baseURL)/search.json"
+        let parameters: [String: String] = [
+            "key": apiKey,
+            "q": encodedQuery
+        ]
+        let task = AF.request(urlString, method: .get ,parameters: parameters)
+            .serializingData()
+ 
+        let results = try await JSONDecoder().decode([SearchResponse].self,from: task.value)
+        return results
     }
     
 }

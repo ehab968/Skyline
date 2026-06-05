@@ -8,22 +8,26 @@
 import SwiftUI
 
 struct SuggestedCititesSction: View {
-    var viewModel: AddCityViewModel
+    var viewModel: AddCityViewModelProtocol
     @Environment(\.isSearching) private var isSearching
     @Environment(\.dismissSearch) private var dismissSearch
     var body: some View {
         if isSearching {
             Section("Suggested Cities") {
+                
+                if viewModel.isLoading {
+                    ShowLoadingIndicator()
+                }
                 if viewModel.suggestedCities.isEmpty {
                     Text("No cities found")
                         .foregroundColor(.white.opacity(0.8))
                 } else {
                     ForEach(viewModel.suggestedCities, id: \.self) { city in
                         Button(action: {
-                            viewModel.addCity(city)
+                            viewModel.addCity(city: city)
                             dismissSearch()
                         }) {
-                            Text(city)
+                            Text(city.displayName)
                                 .foregroundColor(.white)
                         }
                     }
@@ -34,6 +38,6 @@ struct SuggestedCititesSction: View {
     }
 }
 
-#Preview {
-    SuggestedCititesSction(viewModel: AddCityViewModel())
-}
+//#Preview {
+//    SuggestedCititesSction(viewModel: AddCityViewModel())
+//}

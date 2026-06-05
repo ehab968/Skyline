@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AddedCitiesSection: View {
-    var viewModel: AddCityViewModel
+    var viewModel: AddCityViewModelProtocol
     
     var body: some View {
         Section("Added Cities") {
@@ -27,5 +27,5 @@ struct AddedCitiesSection: View {
 }
 
 #Preview {
-    AddedCitiesSection(viewModel: AddCityViewModel())
+//    AddedCitiesSection(viewModel: AddCityViewModel())
 }

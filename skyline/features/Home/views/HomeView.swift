@@ -3,7 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @State var viewModel: HomeViewModelProtocol
     @State private var showAddCity = false
-    
+    let addCityFactory: AddCityViewFactory
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -12,16 +12,7 @@ struct HomeView: View {
                 Group {
                     // MARK: - Loading Indicator
                     if viewModel.isLoading {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            ProgressView()
-                                .scaleEffect(1.5)
-                                .tint(.white)
-                            Spacer()
-                        }
-                        
-                        Spacer()
+                        ShowLoadingIndicator()
                     }
                     
                     else {
@@ -31,7 +22,7 @@ struct HomeView: View {
                 }
             }
             .navigationDestination(isPresented: $showAddCity) {
-                AddCityView(homeViewModel: viewModel)
+                addCityFactory.makeAddCityView(homeViewModel: viewModel)
             }
             .AppBackground(for: viewModel.timeOfDay)
             .showErrorAlert(title: "Error", errorMessage: $viewModel.errorMessage)

@@ -12,7 +12,7 @@ struct CurrentWeatherDetails: View {
     let currentForecast: ForecastDay
     var body: some View {
         VStack(alignment: .center, spacing: 6) {
-            Text(weatherResponse.location.region)
+            Text(weatherResponse.location.region.cleanedWeatherName())
                 .font(.system(size: 36, weight: .semibold, design: .rounded))
                 .foregroundColor(.white)
                 .padding(.top, 16)

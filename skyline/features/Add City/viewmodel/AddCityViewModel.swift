@@ -8,35 +8,60 @@
 import Foundation
 
 protocol AddCityViewModelProtocol {
+    func addCity(city: SearchResponse)
     var searchText: String { get set }
     var addedCities: [String] { get }
-    var suggestedCities: [String] { get }
-    func addCity(_ city: String)
+    var suggestedCities: [SearchResponse] { get }
+    var isLoading: Bool { get }
 }
 
 @Observable
 class AddCityViewModel: AddCityViewModelProtocol {
-    var searchText: String = ""
+    
+    private let networkService: NetworkServiceProtocol
+    
     var addedCities: [String] = []
+    var suggestedCities: [SearchResponse] = []
+    var isLoading: Bool = false
+    private var searchTask: Task<Void, Never>?
     
-    private let allCities: [String] = [
-        "New York", "London", "Paris", "Tokyo", "Dubai", "Singapore", 
-        "Barcelona", "Los Angeles", "Rome", "Sydney", "Cairo", "Berlin",
-        "Madrid", "Toronto", "Mumbai", "Seoul", "Amsterdam", "Riyadh",
-        "Istanbul", "Vienna", "Bangkok", "Hong Kong", "Kuala Lumpur"
-    ]
     
-    var suggestedCities: [String] {
-            if searchText.isEmpty {
-                return allCities
-            } else {
-                return allCities.filter { $0.localizedCaseInsensitiveContains(searchText) }
+    
+    var searchText: String = "" {
+        didSet {
+            searchTask?.cancel()
+            searchTask = Task {
+                try? await Task.sleep(nanoseconds: 300_000_000)
+                await performSearch()
             }
         }
+    }
     
-    func addCity(_ city: String) {
-        if !addedCities.contains(city) {
-            addedCities.insert(city, at: 0)
+    init(networkService: NetworkServiceProtocol) {
+        self.networkService = networkService
+    }
+    
+    @MainActor
+    private func performSearch() async {
+        guard searchText.count >= 1 else {
+            self.suggestedCities = []
+            return
+        }
+        
+        isLoading = true
+        do {
+            self.suggestedCities = try await networkService.searchCities(city: searchText)
+        } catch {
+            print("Error searching cities: \(error)")
+            self.suggestedCities = []
+        }
+        isLoading = false
+    }
+    
+    func addCity(city: SearchResponse) {
+        let cityName = city.name.cleanedWeatherName()
+        if !addedCities.contains(cityName) {
+            addedCities.insert(cityName, at: 0)
         }
         searchText = ""
     }

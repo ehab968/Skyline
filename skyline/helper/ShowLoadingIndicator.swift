@@ -13,7 +13,7 @@ struct ShowLoadingIndicator: View {
         HStack {
             Spacer()
             ProgressView()
-                .controlSize(.large)
+                .controlSize(.regular)
                 .scaleEffect(1.5)
                 .tint(.white)
             Spacer()

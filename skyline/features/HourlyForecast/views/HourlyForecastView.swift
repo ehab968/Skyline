@@ -14,26 +14,29 @@ struct HourlyForecastView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 16) {
                     ForEach(viewModel.hours, id: \.timeEpoch) { hour in
-                        HStack {
+                        HStack() {
                             Text(WeatherDateHelper.formatHourTime(hour.time))
                                 .font(.system(size: 16, weight: .semibold, design: .rounded))
                                 .foregroundColor(.white)
-                                .frame(width: 80, alignment: .leading)
-                            
-                            Spacer()
+                                .frame(width: 75, alignment: .leading)
                             
                             KFImage(URL(string: hour.condition.fullIconURL))
                                 .resizable()
                                 .scaledToFit()
                                 .symbolRenderingMode(.multicolor)
-                                .frame(width: 70, height: 70)
+                                .frame(width: 50, height: 50)
                             
-                            Spacer()
+                            Text(hour.condition.text)
+                                .font(.system(size: 15, weight: .medium, design: .rounded))
+                                .foregroundColor(.white.opacity(0.9))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .lineLimit(2)
+                                .multilineTextAlignment(.leading)
                             
                             Text("\(Int(hour.tempC))°")
-                                .font(.system(size: 18, weight: .bold, design: .rounded))
+                                .font(.system(size: 20, weight: .bold, design: .rounded))
                                 .foregroundColor(.white)
-                                .frame(width: 50, alignment: .trailing)
+                                .frame(width: 45, alignment: .leading)
                         }
                         .padding(.vertical, 12)
                         .padding(.horizontal, 20)

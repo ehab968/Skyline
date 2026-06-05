@@ -10,7 +10,7 @@ import SwiftUI
 struct ForcastHighLowRange: View {
     var day: ForecastDay
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 10) {
             Text("\(Int(day.day.mintempC))°")
                 .font(.system(size: 15, weight: .medium, design: .rounded))
                 .foregroundColor(.white.opacity(0.6))
