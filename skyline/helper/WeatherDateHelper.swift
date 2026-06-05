@@ -43,6 +43,13 @@ struct WeatherDateHelper {
             return dateString
         }
         
+        let calendar = Calendar.current
+        let now = Date()
+        
+        if calendar.isDate(date, equalTo: now, toGranularity: .hour) {
+            return "Now"
+        }
+        
         let outputFormatter = DateFormatter()
         outputFormatter.dateFormat = "h a"
         outputFormatter.locale = Locale(identifier: "en_US")
