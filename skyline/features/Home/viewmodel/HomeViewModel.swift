@@ -18,6 +18,7 @@ protocol HomeViewModelProtocol {
     var errorMessage: String? { get set }
     
     func fetchCurrentWeatherAndForcast(lat: Double, long: Double) async
+    func fetchCurrentWeatherAndForcast(city: String) async
     func loadWeatherForCurrentLocation() async
     func refreshTimeOfDay()
 }
@@ -57,6 +58,25 @@ class HomeViewModel: HomeViewModelProtocol {
         do {
             async let currentTask = networkService.fetchCurrentWeather(lat: lat, long: long)
             async let forecastTask = networkService.fetchForecastWeather(lat: lat, long: long)
+            
+            let current = try await currentTask
+            let forecast = try await forecastTask
+            
+            weatherResponse = current
+            forecastDays = forecast.forecast.forecastday
+        } catch {
+            print("Error fetching weather: \(error)")
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+    }
+    
+    func fetchCurrentWeatherAndForcast(city: String) async {
+        isLoading = true
+        errorMessage = nil
+        do {
+            async let currentTask = networkService.fetchCurrentWeather(city: city)
+            async let forecastTask = networkService.fetchForecastWeather(city: city)
             
             let current = try await currentTask
             let forecast = try await forecastTask

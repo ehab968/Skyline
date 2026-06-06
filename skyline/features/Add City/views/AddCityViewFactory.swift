@@ -15,8 +15,8 @@ class AddCityViewFactory {
         self.swinjectContainer = swinjectContainer
     }
     
-    func makeAddCityView(homeViewModel: HomeViewModelProtocol) -> some View {
+    func makeAddCityView(homeViewModel: HomeViewModelProtocol, selectedCity: Binding<String?>) -> some View {
         let addCityVM = swinjectContainer.resolve(AddCityViewModelProtocol.self)
-        return AddCityView(viewModel: addCityVM, homeViewModel: homeViewModel)
+        return AddCityView(viewModel: addCityVM, homeViewModel: homeViewModel, selectedCity: selectedCity)
     }
 }

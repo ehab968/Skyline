@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AddedCitiesSection: View {
     var viewModel: AddCityViewModelProtocol
+    @Binding var selectedCity: String?
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         Section("Added Cities") {
@@ -17,8 +19,19 @@ struct AddedCitiesSection: View {
                     .foregroundColor(.white.opacity(0.8))
             } else {
                 ForEach(viewModel.addedCities, id: \.self) { city in
-                    Text(city)
-                        .foregroundColor(.white)
+                    Button(action: {
+                        selectedCity = city
+                        dismiss()
+                    }) {
+                        HStack {
+                            Text(city)
+                                .foregroundColor(.white)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.white.opacity(0.4))
+                                .font(.footnote)
+                        }
+                    }
                 }
             }
         }
@@ -27,5 +40,5 @@ struct AddedCitiesSection: View {
 }
 
 #Preview {
-//    AddedCitiesSection(viewModel: AddCityViewModel())
+    //    AddedCitiesSection(viewModel: AddCityViewModel())
 }

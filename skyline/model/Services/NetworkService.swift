@@ -10,6 +10,8 @@ import Alamofire
 protocol NetworkServiceProtocol {
     func fetchCurrentWeather(lat: Double, long: Double) async throws -> WeatherResponse
     func fetchForecastWeather(lat: Double, long: Double) async throws -> ForecastResponse
+    func fetchCurrentWeather(city: String) async throws -> WeatherResponse
+    func fetchForecastWeather(city: String) async throws -> ForecastResponse
     func searchCities(city: String) async throws -> [SearchResponse] 
 }
 
@@ -38,6 +40,44 @@ class NetworkService: NetworkServiceProtocol {
         let parameters: [String: String] = [
             "key": apiKey,
             "q": "\(lat),\(long)",
+            "days": "7",
+            "aqi": "no",
+            "alerts": "no"
+        ]
+        let task = AF.request(urlString, method: .get ,parameters: parameters)
+            .serializingData()
+        
+        let response = try await JSONDecoder().decode(ForecastResponse.self,from: task.value)
+        
+        return response
+    }
+    
+    func fetchCurrentWeather(city: String) async throws -> WeatherResponse {
+        guard let encodedQuery = city.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            throw URLError(.badURL)
+        }
+        let urlString = "\(baseURL)/current.json"
+        let parameters: [String: String] = [
+            "key": apiKey,
+            "q": encodedQuery,
+            "aqi": "no"
+        ]
+        let task = AF.request(urlString, method: .get ,parameters: parameters)
+            .serializingData()
+        
+        let response = try await JSONDecoder().decode(WeatherResponse.self,from: task.value)
+        
+        return response
+    }
+    
+    func fetchForecastWeather(city: String) async throws -> ForecastResponse {
+        guard let encodedQuery = city.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            throw URLError(.badURL)
+        }
+        let urlString = "\(baseURL)/forecast.json"
+        let parameters: [String: String] = [
+            "key": apiKey,
+            "q": encodedQuery,
             "days": "7",
             "aqi": "no",
             "alerts": "no"

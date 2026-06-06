@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @State var viewModel: HomeViewModelProtocol
     @State private var showAddCity = false
+    @State private var selectedCity: String? = nil
     let addCityFactory: AddCityViewFactory
     var body: some View {
         NavigationStack {
@@ -22,16 +23,25 @@ struct HomeView: View {
                 }
             }
             .navigationDestination(isPresented: $showAddCity) {
-                addCityFactory.makeAddCityView(homeViewModel: viewModel)
+                addCityFactory.makeAddCityView(homeViewModel: viewModel, selectedCity: $selectedCity)
             }
             .AppBackground(for: viewModel.timeOfDay)
             .showErrorAlert(title: "Error", errorMessage: $viewModel.errorMessage)
             .toolbar(.hidden, for: .navigationBar)
+            .onChange(of: selectedCity) { _, newValue in
+                if let newValue {
+                    Task {
+                        await viewModel.fetchCurrentWeatherAndForcast(city: newValue)
+                    }
+                }
+            }
             .onAppear {
                 viewModel.refreshTimeOfDay()
             }
             .task {
-                await viewModel.loadWeatherForCurrentLocation()
+                if selectedCity == nil {
+                    await viewModel.loadWeatherForCurrentLocation()
+                }
             }
         }
     }

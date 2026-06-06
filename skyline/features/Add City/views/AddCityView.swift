@@ -10,15 +10,16 @@ import SwiftUI
 struct AddCityView: View {
     @State var viewModel: AddCityViewModelProtocol
     var homeViewModel: HomeViewModelProtocol
+    @Binding var selectedCity: String?
     
     var body: some View {
         NavigationStack {
             List {
                 // Mark: - Suggested Cities Section
-                SuggestedCititesSction(viewModel: viewModel)
+                SuggestedCititesSction(viewModel: viewModel, selectedCity: $selectedCity)
                 
                 // Mark: - Added Cities Section
-                AddedCitiesSection(viewModel: viewModel)
+                AddedCitiesSection(viewModel: viewModel, selectedCity: $selectedCity)
             }
             .navigationTitle("Add City")
             .searchable(text: $viewModel.searchText, prompt: "Search for a city")
