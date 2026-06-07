@@ -15,6 +15,7 @@ protocol CitiesViewModelProtocol {
     var timeOfDay: TimeOfDay { get }
     func loadCities()
     func refreshTimeOfDay()
+    func deleteCity(at offsets: IndexSet)
 }
 
 // MARK: - ViewModel
@@ -23,6 +24,7 @@ protocol CitiesViewModelProtocol {
 class CitiesViewModel: CitiesViewModelProtocol {
 
     private let databaseService: DatabaseServiceProtocol
+    private var cityEntities: [CityEntity] = []
     var addedCities: [String] = []
     let currentLocationName: String? = "My Location"
     private(set) var timeOfDay: TimeOfDay = .currentTimeOfDay()
@@ -39,6 +41,7 @@ class CitiesViewModel: CitiesViewModelProtocol {
     func loadCities() {
         do {
             let entities = try databaseService.fetchCities()
+            cityEntities = entities
             var names = entities.map { $0.name }
             names.removeAll { $0 == currentLocationName }
 
@@ -49,6 +52,22 @@ class CitiesViewModel: CitiesViewModelProtocol {
             }
         } catch {
             print("CitiesViewModel — error fetching cities: \(error)")
+        }
+    }
+
+    func deleteCity(at offsets: IndexSet) {
+        guard let viewIndex = offsets.first else { return }
+        // Protect index 0 when it's the current location placeholder
+        if currentLocationName != nil && viewIndex == 0 { return }
+        let dbIndex = currentLocationName != nil ? viewIndex - 1 : viewIndex
+        guard dbIndex >= 0 && dbIndex < cityEntities.count else { return }
+
+        let entityToDelete = cityEntities[dbIndex]
+        do {
+            try databaseService.deleteCity(city: entityToDelete)
+            loadCities()
+        } catch {
+            print("CitiesViewModel — error deleting city: \(error)")
         }
     }
 }

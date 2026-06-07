@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddedCitiesSection: View {
     var viewModel: AddCityViewModelProtocol
-    @Binding var selectedCity: String?
+    @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -20,11 +20,10 @@ struct AddedCitiesSection: View {
             } else {
                 ForEach(Array(viewModel.addedCities.enumerated()),id: \.element) { index, city in
                     Button(action: {
-                        if index == 0 && viewModel.currentLocationName != nil {
-                            selectedCity = "Current Location"
-                        } else {
-                            selectedCity = city
-                        }
+                        let cityToShow = (index == 0 && viewModel.currentLocationName != nil)
+                        ? "Current Location" : city
+                        
+                        coordinator.selectCity(cityToShow)
                         dismiss()
                     }) {
                         AddCityCard(cityName: city, index: index)

@@ -11,10 +11,10 @@ struct RootView: View {
     let homeFactory: HomeViewFactory
     let citiesFactory: CitiesViewFactory
 
-    @State private var selectedTab: Int = 0
+    @State private var coordinator = AppCoordinator()
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: $coordinator.activeTab) {
             // MARK: - Weather Tab
             homeFactory.makeHomeView()
                 .tabItem {
@@ -29,6 +29,7 @@ struct RootView: View {
                 }
                 .tag(1)
         }
+        .environment(coordinator)
         .tint(.white)
         .onAppear {
             let appearance = UITabBarAppearance()

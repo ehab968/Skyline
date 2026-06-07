@@ -9,10 +9,8 @@ import SwiftUI
 
 struct SuggestedCititesSction: View {
     var viewModel: AddCityViewModelProtocol
-    @Binding var selectedCity: String?
     @Environment(\.isSearching) private var isSearching
     @Environment(\.dismissSearch) private var dismissSearch
-    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         if isSearching {
@@ -32,9 +30,7 @@ struct SuggestedCititesSction: View {
                     ForEach(viewModel.suggestedCities, id: \.self) { city in
                         Button(action: {
                             viewModel.addCity(city: city)
-                            selectedCity = city.name
                             dismissSearch()
-                            dismiss()
                         }) {
                             SuggestedCityRow(city: city)
                         }

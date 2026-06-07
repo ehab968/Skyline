@@ -27,5 +27,5 @@ struct CityRowCardIconBage: View {
 }
 
 #Preview {
-    CityRowCardIconBage()
+//    CityRowCardIconBage()
 }

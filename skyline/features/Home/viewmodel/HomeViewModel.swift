@@ -20,6 +20,7 @@ protocol HomeViewModelProtocol {
     func fetchCurrentWeatherAndForcast(lat: Double, long: Double) async
     func fetchCurrentWeatherAndForcast(city: String) async
     func loadWeatherForCurrentLocation() async
+    func refreshWeather() async
     func refreshTimeOfDay()
 }
 
@@ -88,6 +89,14 @@ class HomeViewModel: HomeViewModelProtocol {
             errorMessage = error.localizedDescription
         }
         isLoading = false
+    }
+    
+    
+    func refreshWeather() async {
+        let lat: Double = (weatherResponse?.location.latitude)!
+        let long: Double = (weatherResponse?.location.longitude)!
+        
+        await fetchCurrentWeatherAndForcast(lat: lat, long: long)
     }
     
     func refreshTimeOfDay() {

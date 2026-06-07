@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CitiesView: View {
     @State var viewModel: CitiesViewModelProtocol
+    @Environment(AppCoordinator.self) private var coordinator
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,21 +20,31 @@ struct CitiesView: View {
             if viewModel.addedCities.isEmpty {
                 CitiesEmptyStateView()
             } else {
-                ScrollView(showsIndicators: false) {
-                    LazyVStack(spacing: 12) {
-                        ForEach(
-                            Array(viewModel.addedCities.enumerated()),
-                            id: \.element
-                        ) { index, city in
+                List {
+                    ForEach(
+                        Array(viewModel.addedCities.enumerated()),
+                        id: \.element
+                    ) { index, city in
+                        Button {
+                            let cityToLoad = (index == 0 && viewModel.currentLocationName != nil)
+                                ? "Current Location"
+                                : city
+                            coordinator.selectCity(cityToLoad)
+                        } label: {
                             CityRowCard(cityName: city, index: index)
-                                .transition(.opacity.combined(with: .move(edge: .bottom)))
                         }
+                        .buttonStyle(.plain)
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets(top: 6, leading: 20, bottom: 6, trailing: 20))
+                        .deleteDisabled(index == 0 && viewModel.currentLocationName != nil)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 12)
-                    .padding(.bottom, 32)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.addedCities)
+                    .onDelete { offsets in
+                        viewModel.deleteCity(at: offsets)
+                    }
                 }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
             }
         }
         .AppBackground(for: viewModel.timeOfDay)
@@ -43,4 +54,3 @@ struct CitiesView: View {
         }
     }
 }
-

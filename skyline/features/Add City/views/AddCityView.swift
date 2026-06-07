@@ -10,16 +10,15 @@ import SwiftUI
 struct AddCityView: View {
     @State var viewModel: AddCityViewModelProtocol
     var homeViewModel: HomeViewModelProtocol
-    @Binding var selectedCity: String?
     
     var body: some View {
         NavigationStack {
             List {
                 // Mark: - Suggested Cities Section
-                SuggestedCititesSction(viewModel: viewModel, selectedCity: $selectedCity)
+                SuggestedCititesSction(viewModel: viewModel)
                 
                 // Mark: - Added Cities Section
-                AddedCitiesSection(viewModel: viewModel, selectedCity: $selectedCity)
+                AddedCitiesSection(viewModel: viewModel)
             }
             .navigationTitle("Add City")
             .showCustomAlert(title: "Error", errorMessage: $viewModel.errorMessage)

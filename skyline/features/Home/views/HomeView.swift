@@ -3,8 +3,10 @@ import SwiftUI
 struct HomeView: View {
     @State var viewModel: HomeViewModelProtocol
     @State private var showAddCity = false
-    @State private var selectedCity: String? = nil
     let addCityFactory: AddCityViewFactory
+    
+    @Environment(AppCoordinator.self) private var coordinator
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -23,18 +25,24 @@ struct HomeView: View {
                 }
             }
             .navigationDestination(isPresented: $showAddCity) {
-                addCityFactory.makeAddCityView(homeViewModel: viewModel, selectedCity: $selectedCity)
+                addCityFactory.makeAddCityView(homeViewModel: viewModel)
+            }
+            .refreshable {
+                await viewModel.refreshWeather()
             }
             .AppBackground(for: viewModel.timeOfDay)
             .showCustomAlert(title: "Error", errorMessage: $viewModel.errorMessage)
             .toolbar(.hidden, for: .navigationBar)
-            .onChange(of: selectedCity) { _, newValue in
-                if let newValue {
+            
+            .onChange(of: coordinator.selectedCity) { _, _ in
+                if let city = coordinator.selectedCity {
                     Task {
-                        if newValue == "Current Location" {
+                        if city == "Current Location" {
+                            print("Loading weather for current location")
                             await viewModel.loadWeatherForCurrentLocation()
                         } else {
-                            await viewModel.fetchCurrentWeatherAndForcast(city: newValue)
+                            print("Loading weather for city: \(city)")
+                            await viewModel.fetchCurrentWeatherAndForcast(city: city)
                         }
                     }
                 }
@@ -43,7 +51,7 @@ struct HomeView: View {
                 viewModel.refreshTimeOfDay()
             }
             .task {
-                if selectedCity == nil {
+                if coordinator.selectedCity == nil {
                     await viewModel.loadWeatherForCurrentLocation()
                 }
             }
