@@ -13,16 +13,21 @@ struct SuggestedCititesSction: View {
     @Environment(\.isSearching) private var isSearching
     @Environment(\.dismissSearch) private var dismissSearch
     @Environment(\.dismiss) private var dismiss
+
     var body: some View {
         if isSearching {
             Section("Suggested Cities") {
-                
                 if viewModel.isLoading {
                     ShowLoadingIndicator()
-                }
-                if viewModel.suggestedCities.isEmpty {
-                    Text("No cities found")
-                        .foregroundColor(.white.opacity(0.8))
+                } else if viewModel.suggestedCities.isEmpty {
+                    HStack(spacing: 12) {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(.white.opacity(0.5))
+                        Text("No cities found")
+                            .foregroundStyle(.white.opacity(0.7))
+                            .font(.subheadline)
+                    }
+                    .padding(.vertical, 8)
                 } else {
                     ForEach(viewModel.suggestedCities, id: \.self) { city in
                         Button(action: {
@@ -31,9 +36,9 @@ struct SuggestedCititesSction: View {
                             dismissSearch()
                             dismiss()
                         }) {
-                            Text(city.displayName)
-                                .foregroundColor(.white)
+                            SuggestedCityRow(city: city)
                         }
+                        .buttonStyle(.plain)
                     }
                 }
             }

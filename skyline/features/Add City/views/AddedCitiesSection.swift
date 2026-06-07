@@ -27,9 +27,10 @@ struct AddedCitiesSection: View {
                         }
                         dismiss()
                     }) {
-                        CityCard(cityName: city, index: index)
+                        AddCityCard(cityName: city, index: index)
                     }
                     .deleteDisabled(index == 0 && viewModel.currentLocationName != nil)
+                    .listRowSeparatorTint(.white.opacity(0.5))
                 }
                 .onDelete(perform: viewModel.deleteCity)
             }
