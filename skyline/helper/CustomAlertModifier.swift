@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct ErrorAlertModifier: ViewModifier {
+struct CustomAlertModifier: ViewModifier {
     let title: String
     @Binding var errorMessage: String?
     
@@ -30,7 +30,7 @@ struct ErrorAlertModifier: ViewModifier {
 
 
 extension View {
-    func showErrorAlert(title: String = "Error", errorMessage: Binding<String?>) -> some View {
-        self.modifier(ErrorAlertModifier(title: title, errorMessage: errorMessage))
+    func showCustomAlert(title: String, errorMessage: Binding<String?>) -> some View {
+        self.modifier(CustomAlertModifier(title: title, errorMessage: errorMessage))
     }
 }

@@ -22,6 +22,7 @@ struct AddCityView: View {
                 AddedCitiesSection(viewModel: viewModel, selectedCity: $selectedCity)
             }
             .navigationTitle("Add City")
+            .showCustomAlert(title: "Error", errorMessage: $viewModel.errorMessage)
             .searchable(text: $viewModel.searchText, prompt: "Search for a city")
             .animation(.default, value: viewModel.searchText)
             .animation(.default, value: viewModel.addedCities)

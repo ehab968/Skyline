@@ -26,12 +26,16 @@ struct HomeView: View {
                 addCityFactory.makeAddCityView(homeViewModel: viewModel, selectedCity: $selectedCity)
             }
             .AppBackground(for: viewModel.timeOfDay)
-            .showErrorAlert(title: "Error", errorMessage: $viewModel.errorMessage)
+            .showCustomAlert(title: "Error", errorMessage: $viewModel.errorMessage)
             .toolbar(.hidden, for: .navigationBar)
             .onChange(of: selectedCity) { _, newValue in
                 if let newValue {
                     Task {
-                        await viewModel.fetchCurrentWeatherAndForcast(city: newValue)
+                        if newValue == "Current Location" {
+                            await viewModel.loadWeatherForCurrentLocation()
+                        } else {
+                            await viewModel.fetchCurrentWeatherAndForcast(city: newValue)
+                        }
                     }
                 }
             }

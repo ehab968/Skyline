@@ -18,21 +18,20 @@ struct AddedCitiesSection: View {
                 Text("No cities added yet.")
                     .foregroundColor(.white.opacity(0.8))
             } else {
-                ForEach(viewModel.addedCities, id: \.self) { city in
+                ForEach(Array(viewModel.addedCities.enumerated()),id: \.element) { index, city in
                     Button(action: {
-                        selectedCity = city
+                        if index == 0 && viewModel.currentLocationName != nil {
+                            selectedCity = "Current Location"
+                        } else {
+                            selectedCity = city
+                        }
                         dismiss()
                     }) {
-                        HStack {
-                            Text(city)
-                                .foregroundColor(.white)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.white.opacity(0.4))
-                                .font(.footnote)
-                        }
+                        CityCard(cityName: city, index: index)
                     }
+                    .deleteDisabled(index == 0 && viewModel.currentLocationName != nil)
                 }
+                .onDelete(perform: viewModel.deleteCity)
             }
         }
         .listRowBackground(Color.glassCardBg)

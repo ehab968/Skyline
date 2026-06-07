@@ -7,6 +7,7 @@
 
 import Foundation
 import Swinject
+import SwiftData
 class SwinjectContainer {
     static let shared = SwinjectContainer()
     
@@ -17,15 +18,27 @@ class SwinjectContainer {
         registerDependencies()
     }
     
+    func setupModelContainer(_ modelContainer: ModelContainer) {
+        container.register(ModelContainer.self) { _ in
+            return modelContainer
+        }.inObjectScope(.container)
+    }
+    
     private func registerDependencies() {
         
+        // NetworkService, LocationService and DatabaseService
         container.register(NetworkServiceProtocol.self) { _ in
             return NetworkService()
         }
         container.register(LocationServiceProtocol.self) { _ in
             return LocationService()
         }
+        container.register(DatabaseServiceProtocol.self){ r in
+            let modelContainer = r.resolve(ModelContainer.self)!
+            return DatabaseService(modelContainer: modelContainer)
+        }
         
+        // ViewModels
         container.register(HomeViewModelProtocol.self) { r in
             let networkService = r.resolve(NetworkServiceProtocol.self)!
             let locationService = r.resolve(LocationServiceProtocol.self)!
@@ -34,8 +47,11 @@ class SwinjectContainer {
         
         container.register(AddCityViewModelProtocol.self) { r in
             let networkService = r.resolve(NetworkServiceProtocol.self)!
-            return AddCityViewModel(networkService: networkService)
+            let databaseService = r.resolve(DatabaseServiceProtocol.self)!
+            return AddCityViewModel(networkService: networkService, databaseService: databaseService)
         }
+        
+        // Factories
         container.register(AddCityViewFactory.self) { _ in
             return AddCityViewFactory(swinjectContainer: self)
         }
