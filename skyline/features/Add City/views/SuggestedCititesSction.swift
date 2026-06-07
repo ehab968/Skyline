@@ -35,6 +35,7 @@ struct SuggestedCititesSction: View {
                             SuggestedCityRow(city: city)
                         }
                         .buttonStyle(.plain)
+                        .listRowSeparatorTint(.white.opacity(0.5))
                     }
                 }
             }

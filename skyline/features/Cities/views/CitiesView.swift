@@ -10,13 +10,13 @@ import SwiftUI
 struct CitiesView: View {
     @State var viewModel: CitiesViewModelProtocol
     @Environment(AppCoordinator.self) private var coordinator
+    @Environment(\.editMode) private var editMode
+    @State private var offsetsToDelete: IndexSet? = nil
 
     var body: some View {
         VStack(spacing: 0) {
-            // MARK: - Header
             CitiesHeaderView()
 
-            // MARK: - Content
             if viewModel.addedCities.isEmpty {
                 CitiesEmptyStateView()
             } else {
@@ -48,6 +48,14 @@ struct CitiesView: View {
             }
         }
         .AppBackground(for: viewModel.timeOfDay)
+//        .showDeleteConfirmationAlert(
+//            title: "Delete City",
+//            message: "Are you sure you want to remove this city from your saved list?",
+//            itemToDelete: $offsetsToDelete
+//        ) { offsets in
+//            
+//            viewModel.deleteCity(at: offsets)
+//        }
         .onAppear {
             viewModel.refreshTimeOfDay()
             viewModel.loadCities()
