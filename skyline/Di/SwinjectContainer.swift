@@ -51,6 +51,11 @@ class SwinjectContainer {
             return AddCityViewModel(networkService: networkService, databaseService: databaseService)
         }
         
+        container.register(CitiesViewModelProtocol.self) { r in
+            let databaseService = r.resolve(DatabaseServiceProtocol.self)!
+            return CitiesViewModel(databaseService: databaseService)
+        }
+        
         // Factories
         container.register(AddCityViewFactory.self) { _ in
             return AddCityViewFactory(swinjectContainer: self)
@@ -59,6 +64,16 @@ class SwinjectContainer {
         container.register(HomeViewFactory.self) { r in
             let addCityFact = r.resolve(AddCityViewFactory.self)!
             return HomeViewFactory(swinjectContainer: self, addCityFactory: addCityFact)
+        }
+        
+        container.register(CitiesViewFactory.self) { _ in
+            return CitiesViewFactory(swinjectContainer: self)
+        }
+        
+        container.register(RootViewFactory.self) { r in
+            let homeFact = r.resolve(HomeViewFactory.self)!
+            let citiesFact = r.resolve(CitiesViewFactory.self)!
+            return RootViewFactory(swinjectContainer: self, homeFactory: homeFact, citiesFactory: citiesFact)
         }
     }
     

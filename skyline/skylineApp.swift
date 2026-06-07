@@ -10,7 +10,7 @@ import SwiftData
 @main
 struct skylineApp: App {
     let swinjectContainer = SwinjectContainer.shared
-    let homeFactory : HomeViewFactory
+    let rootFactory: RootViewFactory
     let sharedModelContainer: ModelContainer = {
             let schema = Schema([
                 CityEntity.self
@@ -26,12 +26,12 @@ struct skylineApp: App {
     
     init() {
         swinjectContainer.setupModelContainer(sharedModelContainer)
-        homeFactory = swinjectContainer.resolve(HomeViewFactory.self)
+        rootFactory = swinjectContainer.resolve(RootViewFactory.self)
     }
     
     var body: some Scene {
         WindowGroup {
-            homeFactory.makeHomeView()
+            rootFactory.makeRootView()
         }
     }
 }
